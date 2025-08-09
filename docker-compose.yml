@@ -1,4 +1,5 @@
 version: "3.9"
+
 services:
   db:
     image: mysql:8.0
@@ -11,6 +12,7 @@ services:
       - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
+    # No need for depends_on in db
 
   backend:
     build: ./backend
@@ -21,16 +23,16 @@ services:
       - .env
     depends_on:
       - db
+    # Ensure DB is ready before starting (optional improvement later)
 
   frontend:
     build: ./frontend
     restart: always
     ports:
-      - "3000:3000"
-    stdin_open: true
-    tty: true
+      - "3000:80"  # ← Nginx runs on port 80 inside container!
     depends_on:
       - backend
+    # No env_file needed unless you have one in frontend
 
 volumes:
   db_data:
