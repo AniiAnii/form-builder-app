@@ -1,0 +1,130 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #0F1A3D;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.auth-card {
+  background: white;
+  color: #1a1a1a;
+  padding: 40px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.auth-title {
+  font-size: 1.8rem;
+  color: #0F1A3D;
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+
+.auth-subtitle {
+  color: #555;
+  margin: 0 0 20px;
+  font-size: 1rem;
+}
+
+.auth-form .form-group {
+  margin-bottom: 18px;
+}
+
+.auth-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+  outline: none;
+}
+
+.auth-form input:focus {
+  border-color: #00D1B2;
+  box-shadow: 0 0 0 3px rgba(0, 209, 178, 0.2);
+}
+
+.auth-error {
+  background: #ffebee;
+  color: #c62828;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+  border: 1px solid #ef9a9a;
+}
+
+.btn {
+  padding: 14px 20px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: #00D1B2;
+  color: white;
+  box-shadow: 0 4px 14px rgba(0, 209, 178, 0.4);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #00b89c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 209, 178, 0.5);
+}
+
+.btn-primary:disabled {
+  background: #8edcd7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.auth-footer {
+  margin-top: 20px;
+  text-align: center;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.link-accent {
+  color: #00D1B2;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.link-accent:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .auth-card {
+    padding: 30px 20px;
+  }
+
+  .auth-title {
+    font-size: 1.6rem;
+  }
+}
