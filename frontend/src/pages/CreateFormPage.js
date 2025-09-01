@@ -1,6 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CreateFormPage.css";
+import api from "./api"; 
+
+
+export const createForm = async (form) => { 
+
+  const res = await api.post("/forms", form); 
+
+  return res.data; 
+
+}; 
 
 export default function CreateFormPage() {
   const [title, setTitle] = useState("");

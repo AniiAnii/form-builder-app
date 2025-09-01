@@ -2,11 +2,27 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Dashboard.css";
 
+
+
 export default function Dashboard() {
   const [forms, setForms] = useState([
     { id: 1, title: "Customer Feedback 2025", responses: 12, createdAt: "Apr 5, 2025" },
     { id: 2, title: "Event Registration", responses: 8, createdAt: "Mar 28, 2025" },
   ]);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const forms = await getMyForms();
+        setForms(forms);
+      } catch (err) {
+      console.error("Greška prilikom učitavanja formi:", err);
+      }
+    };
+
+    load(); // ovde se funkcija poziva
+  }, []); // [] znači da se izvršava samo jednom, kad se komponenta mountuje
+
 
   return (
     <div className="dashboard-container">
@@ -45,3 +61,4 @@ export default function Dashboard() {
     </div>
   );
 }
+
