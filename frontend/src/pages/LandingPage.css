@@ -1,0 +1,154 @@
+.landing-page {
+  display: flex;
+  min-height: 100vh;
+  background: #0F1A3D; /* Deep navy blue */
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.landing-content {
+  flex: 1;
+  padding: 80px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.landing-visual {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.landing-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: #ffffff;
+  letter-spacing: -1px;
+}
+
+.landing-subtitle {
+  font-size: 1.3rem;
+  color: #a0d2f1; /* Soft light blue */
+  margin: 20px 0 40px;
+  line-height: 1.6;
+  max-width: 500px;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 14px 32px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  text-align: center;
+}
+
+.btn-primary {
+  background: #00D1B2; /* Turquoise */
+  color: white;
+  box-shadow: 0 4px 14px rgba(0, 209, 178, 0.4);
+}
+
+.btn-primary:hover {
+  background: #00b89c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 209, 178, 0.5);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #4BCFFF; /* Light sky blue */
+  border: 2px solid #4BCFFF;
+}
+
+.btn-secondary:hover {
+  background: rgba(75, 207, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Visual Card */
+.form-card {
+  background: white;
+  color: #1a1a1a;
+  padding: 30px;
+  border-radius: 16px;
+  width: 320px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease;
+  border-left: 5px solid #00D1B2;
+}
+
+.form-card:hover {
+  transform: translateY(-5px);
+}
+
+.form-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.4rem;
+  color: #0F1A3D;
+}
+
+.form-card p {
+  margin: 0 0 16px;
+  color: #555;
+  font-size: 1rem;
+}
+
+.form-stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #777;
+  margin-top: 10px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .landing-page {
+    flex-direction: column;
+  }
+
+  .landing-content,
+  .landing-visual {
+    padding: 40px 20px;
+  }
+
+  .landing-title {
+    font-size: 2.8rem;
+  }
+
+  .landing-subtitle {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .landing-title {
+    font-size: 2.3rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
