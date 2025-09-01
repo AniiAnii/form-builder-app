@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const db = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const waitForDb = require('./utils/waitForDb'); 
+const formRoutes = require("./routes/formRoutes"); 
 
 // Učitaj modele
 const User = require("./models/User");
@@ -17,6 +18,8 @@ app.use(express.json());
 
 // Ruta za autentifikaciju
 app.use("/api/auth", authRoutes);
+
+app.use("/api/forms", formRoutes); 
 
 // Test ruta
 app.get("/", (req, res) => res.send("Backend radi!"));
