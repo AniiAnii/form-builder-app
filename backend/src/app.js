@@ -7,6 +7,7 @@ const waitForDb = require('./utils/waitForDb');
 
 // Učitaj modele
 const User = require("./models/User");
+const Form = require("./models/Form");
 
 dotenv.config();
 
