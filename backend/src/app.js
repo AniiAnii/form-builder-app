@@ -3,6 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const db = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
+const waitForDb = require('./utils/waitForDb'); 
 
 // Učitaj modele
 const User = require("./models/User");
@@ -22,24 +23,12 @@ app.get("/", (req, res) => res.send("Backend radi!"));
 // === Bolja inicijalizacija sa povezivanjem i sinhronizacijom ===
 const PORT = process.env.BACKEND_PORT || 5000;
 
-async function startServer() {
-  try {
-    // 1. Proveri konekciju ka bazi
-    await db.authenticate();
-    console.log("MySQL konekcija uspostavljena.");
-
-    // 2. Sinhronizuj modele
-    await db.sync(/* { force: false } */);
-    console.log("Baza sinhronizovana.");
-
-    // 3. Pokreni server
-    app.listen(PORT, () => {
-      console.log(`Server radi na portu ${PORT}`);
-    });
-  } catch (error) {
-    console.error("Greška prilikom pokretanja servera:", error);
-    process.exit(1); // Zaustavi aplikaciju ako DB nije dostupna
-  }
-}
-
-startServer();
+(async () => { 
+  try { 
+    await waitForDb(); 
+    await db.sync(); // koristi db.sync()
+    app.listen(PORT, () => console.log(`Server radi na portu ${PORT}`)); 
+  } catch (err) { 
+    console.error("Konekcija ka bazi neuspešna:", err); 
+  } 
+})();
