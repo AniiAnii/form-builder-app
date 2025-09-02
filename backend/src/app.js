@@ -5,6 +5,7 @@ const db = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const waitForDb = require('./utils/waitForDb'); 
 const formRoutes = require("./routes/formRoutes"); 
+const questionRoutes = require("./routes/questionRoutes");
 
 // Učitaj modele
 const User = require("./models/User");
@@ -20,6 +21,8 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 
 app.use("/api/forms", formRoutes); 
+
+app.use("/api/questions", questionRoutes);
 
 // Test ruta
 app.get("/", (req, res) => res.send("Backend radi!"));
