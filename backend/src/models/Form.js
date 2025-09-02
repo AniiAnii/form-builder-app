@@ -62,4 +62,9 @@ const Form = sequelize.define("Form", {
 
 Form.belongsTo(User, { foreignKey: "ownerId" }); 
 
+// Relacije ka drugim modelima
+Form.hasMany(Question, { foreignKey: "formId" });
+Form.hasMany(Response, { foreignKey: "formId" });
+Form.hasMany(Collaborator, { foreignKey: "formId" });
+
 module.exports = Form; 
