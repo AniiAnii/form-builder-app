@@ -12,6 +12,12 @@ const questionImageRoutes = require('./routes/questionImageRoutes');
 const User = require("./models/User");
 const Form = require("./models/Form");
 
+const Question = require("./models/Question");
+const Response = require("./models/Response");
+const Collaborator = require("./models/Collaborator");
+
+require("./models/associations")(); // Učitaj sve relacije
+
 dotenv.config();
 
 const app = express();

@@ -13,7 +13,7 @@ const Collaborator = sequelize.define("Collaborator", {
     type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
     references: {
-      model: User,
+      model: 'User',
       key: "id",
     },
     onDelete: "CASCADE",
@@ -22,7 +22,7 @@ const Collaborator = sequelize.define("Collaborator", {
     type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
     references: {
-      model: Form,
+      model: 'Form',
       key: "id",
     },
     onDelete: "CASCADE",

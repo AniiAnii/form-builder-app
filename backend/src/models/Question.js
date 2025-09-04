@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
-const Form = require("./Form");
+//const Form = require("./Form");
 
 const Question = sequelize.define("Question", {
   id: {
@@ -12,7 +12,7 @@ const Question = sequelize.define("Question", {
     type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
     references: {
-      model: Form,
+      model: 'Form',
       key: "id",
     },
     onDelete: "CASCADE",
@@ -71,7 +71,7 @@ const Question = sequelize.define("Question", {
   timestamps: true,
 });
 
-Form.hasMany(Question, { foreignKey: "formId" });
-Question.belongsTo(Form, { foreignKey: "formId" });
+//Form.hasMany(Question, { foreignKey: "formId" }); prijavljuje gresku
+//Question.belongsTo(Form, { foreignKey: "formId" });
 
 module.exports = Question;
