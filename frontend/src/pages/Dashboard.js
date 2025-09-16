@@ -1,28 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Dashboard.css";
-
-
+import api from './api';
 
 export default function Dashboard() {
-  const [forms, setForms] = useState([
-    { id: 1, title: "Customer Feedback 2025", responses: 12, createdAt: "Apr 5, 2025" },
-    { id: 2, title: "Event Registration", responses: 8, createdAt: "Mar 28, 2025" },
-  ]);
+  const [forms, setForms] = useState([]);
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
-    const load = async () => {
+    const loadForms = async () => {
+      if (!token) {
+        console.log("Nema tokena – korisnik nije prijavljen");
+        return;
+      }
+
       try {
-        const forms = await getMyForms();
-        setForms(forms);
+        const result = await api.getMyForms(token); // Poziv preko `api`
+        // Pretpostavimo da backend vraća { forms: [...] }
+        setForms(result.forms || []);
       } catch (err) {
-      console.error("Greška prilikom učitavanja formi:", err);
+        console.error("Greška prilikom učitavanja formi:", err);
+        // Možeš dodati prikaz poruke korisniku
+        setForms([]); // osiguraj prazan niz ako dođe do greške
       }
     };
 
-    load(); // ovde se funkcija poziva
-  }, []); // [] znači da se izvršava samo jednom, kad se komponenta mountuje
-
+    loadForms();
+  }, [token]); // ponovi ako se token promeni
 
   return (
     <div className="dashboard-container">
@@ -37,7 +41,9 @@ export default function Dashboard() {
         <div className="empty-state">
           <h3>No forms yet</h3>
           <p>Create your first form to get started.</p>
-          <Link to="/forms/create" className="btn btn-primary">Create Form</Link>
+          <Link to="/forms/create" className="btn btn-primary">
+            Create Form
+          </Link>
         </div>
       ) : (
         <div className="forms-grid">
@@ -46,7 +52,7 @@ export default function Dashboard() {
               <div className="form-card">
                 <h3 className="form-title">{form.title}</h3>
                 <div className="form-meta">
-                  <span>{form.responses} responses</span>
+                  <span>{form.responses ?? 0} responses</span>
                   <span>Created {form.createdAt}</span>
                 </div>
                 <div className="form-actions">
@@ -61,4 +67,3 @@ export default function Dashboard() {
     </div>
   );
 }
-
