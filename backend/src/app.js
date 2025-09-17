@@ -7,6 +7,7 @@ const waitForDb = require('./utils/waitForDb');
 const formRoutes = require("./routes/formRoutes"); 
 const questionRoutes = require("./routes/questionRoutes");
 const questionImageRoutes = require('./routes/questionImageRoutes');
+const responseRoutes = require("./routes/responseRoutes");
 
 // Učitaj modele
 const User = require("./models/User");
@@ -31,6 +32,8 @@ app.use("/api/forms", formRoutes);
 
 app.use("/api/questions", questionRoutes);
 app.use("/api/questions", questionImageRoutes);
+
+app.use("/api/responses", responseRoutes);
 
 // Serviraj statičke fajlove (slike)
 const path = require('path');
