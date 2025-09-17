@@ -12,7 +12,7 @@ const Question = sequelize.define("Question", {
     type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
     references: {
-      model: 'Form',
+      model: 'forms',
       key: "id",
     },
     onDelete: "CASCADE",

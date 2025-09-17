@@ -13,7 +13,7 @@ const Response = sequelize.define("Response", {
     type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
     references: {
-      model: 'Form',
+      model: 'forms',
       key: "id",
     },
     onDelete: "CASCADE",
@@ -22,7 +22,7 @@ const Response = sequelize.define("Response", {
     type: DataTypes.INTEGER.UNSIGNED,
     allowNull: true,
     references: {
-      model: 'User',
+      model: 'users',
       key: "id",
     },
     onDelete: "SET NULL",
