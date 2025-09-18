@@ -9,6 +9,7 @@ const questionRoutes = require("./routes/questionRoutes");
 const questionImageRoutes = require('./routes/questionImageRoutes');
 const responseRoutes = require("./routes/responseRoutes");
 const collaboratorRoutes = require("./routes/collaboratorRoutes");
+const publicFormRoutes = require('./routes/publicFormRoutes');
 
 // Učitaj modele
 const User = require("./models/User");
@@ -36,6 +37,8 @@ app.use("/api/questions", questionImageRoutes);
 
 app.use("/api/responses", responseRoutes);
 app.use("/api/collaborators", collaboratorRoutes);
+
+app.use("/api", publicFormRoutes);
 
 // Serviraj statičke fajlove (slike)
 const path = require('path');

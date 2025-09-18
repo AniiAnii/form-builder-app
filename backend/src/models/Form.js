@@ -1,7 +1,5 @@
 const { DataTypes } = require("sequelize"); 
-
 const sequelize = require("../config/db"); 
-
 const User = require("./User"); 
 
 //const Question = require("./Question");
@@ -9,13 +7,10 @@ const User = require("./User");
 //const Collaborator = require("./Collaborator");
 
 const Form = sequelize.define("Form", { 
-
   id: { 
 
     type: DataTypes.INTEGER.UNSIGNED, 
-
     autoIncrement: true, 
-
     primaryKey: true, 
 
   }, 
@@ -23,7 +18,6 @@ const Form = sequelize.define("Form", {
   title: { 
 
     type: DataTypes.STRING(255), 
-
     allowNull: false, 
 
   }, 
@@ -31,7 +25,6 @@ const Form = sequelize.define("Form", {
   description: { 
 
     type: DataTypes.TEXT, 
-
     allowNull: true, 
 
   }, 
@@ -39,7 +32,6 @@ const Form = sequelize.define("Form", {
   allowGuests: { 
 
     type: DataTypes.BOOLEAN, 
-
     defaultValue: false, 
 
   }, 
@@ -47,11 +39,15 @@ const Form = sequelize.define("Form", {
   isLocked: { 
 
     type: DataTypes.BOOLEAN, 
-
     defaultValue: false, 
 
   }, 
 
+  shareToken: {
+    type: DataTypes.STRING(36), // UUID format
+    allowNull: false,
+    unique: true,
+  },
 }, { 
 
   tableName: "forms", 
@@ -59,7 +55,13 @@ const Form = sequelize.define("Form", {
   timestamps: true, 
 
 }); 
-
+// Generiši shareToken ako nije dat
+Form.addHook('beforeCreate', async (form) => {
+  if (!form.shareToken) {
+    const crypto = require('crypto');
+    form.shareToken = crypto.randomBytes(18).toString('hex'); // 36 karaktera
+  }
+});
  
 
 Form.belongsTo(User, { foreignKey: "ownerId" }); 
