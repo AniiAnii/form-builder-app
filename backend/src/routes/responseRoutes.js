@@ -1,4 +1,3 @@
-// src/routes/responseRoutes.js
 const express = require("express");
 const router = express.Router();
 const responseController = require("../controllers/responseController");
@@ -9,5 +8,6 @@ router.post("/submit/:formId", responseController.submitResponse); // anonimni m
 router.use(authMiddleware); // ostale rute zahtevaju login
 
 router.get("/form/:formId", responseController.getResponses);
+router.get("/export/:formId", responseController.exportResponsesToExcel);
 
 module.exports = router;
