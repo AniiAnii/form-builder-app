@@ -19,7 +19,7 @@ export default function LoginPage() {
     try {
       const data = await login({ email, password });
       loginSuccess(data);
-      navigate("/");
+      navigate("/profile"); 
     } catch (err) {
       setError(err?.response?.data?.message || "Login failed");
     } finally {
@@ -44,6 +44,7 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               required
+              autoFocus 
             />
           </div>
           <div className="form-group">
@@ -63,9 +64,8 @@ export default function LoginPage() {
 
         <div className="auth-footer">
           Don't have an account?{" "}
-          <a href="/register" className="link-accent">
-            Register
-          </a>
+          
+        <Link to="/register" className="link-accent">Register</Link>
         </div>
       </div>
     </div>

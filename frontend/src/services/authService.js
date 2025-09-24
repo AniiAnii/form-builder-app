@@ -13,7 +13,9 @@ export const login = async ({ email, password }) => {
 
 export const me = async (token) => {
   const res = await api.get("/auth/me", {
-    headers: { Authorization: `Bearer ${token}` }
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
   return res.data;
 };

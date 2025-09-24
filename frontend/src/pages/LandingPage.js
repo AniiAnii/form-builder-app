@@ -1,8 +1,24 @@
-import React from "react";
+// frontend/src/pages/LandingPage.js
+import React, { useContext, useEffect } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import "./LandingPage.css"; // We'll create this next
+import "./LandingPage.css";
 
 export default function LandingPage() {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  // Redirect if user is already logged in
+  useEffect(() => {
+    if (user) {
+      navigate("/profile", { replace: true });
+    }
+  }, [user, navigate]);
+
+  // While checking auth or redirecting, show nothing
+  if (user) return null;
+
   return (
     <div className="landing-page">
       {/* Left Side - Hero Content */}

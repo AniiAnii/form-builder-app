@@ -12,6 +12,17 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { user } = useContext(AuthContext);
+
+
+
+  React.useEffect(() => {
+  if (user) {
+    navigate("/profile", { replace: true });
+  }
+}, [user, navigate]);
+
+if (user) return null; // or loading spinner
 
   async function submit(e) {
     e.preventDefault();
@@ -20,7 +31,7 @@ export default function RegisterPage() {
     try {
       const data = await register({ name, email, password });
       loginSuccess(data);
-      navigate("/");
+      navigate("/profile");
     } catch (err) {
       setError(err?.response?.data?.message || "Registration failed");
     } finally {
@@ -65,6 +76,7 @@ export default function RegisterPage() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Create a password"
               required
+              autoFocus 
             />
           </div>
           <button type="submit" className="btn btn-primary" disabled={loading}>
@@ -73,11 +85,11 @@ export default function RegisterPage() {
         </form>
 
         <div className="auth-footer">
-          Already have an account?{" "}
-          <a href="/login" className="link-accent">
-            Sign In
-          </a>
-        </div>
+         Already have an account?{" "}
+        <Link to="/login" className="link-accent">
+         Sign In
+        </Link>
+</div>
       </div>
     </div>
   );
