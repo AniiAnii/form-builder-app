@@ -1,0 +1,164 @@
+.profile-container {
+  max-width: 800px;
+  margin: 60px auto;
+  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+  color: var(--text-color);
+}
+
+.profile-card {
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.profile-card h2 {
+  margin: 0 0 8px;
+  color: var(--title-color);
+}
+
+.section {
+  background: var(--card-bg);
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.section h3 {
+  margin-top: 0;
+  color: var(--title-color);
+}
+
+/* Theme Toggle */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+}
+
+.toggle-input {
+  opacity: 0;
+  width: 0;
+}
+
+.slider {
+  width: 50px;
+  height: 24px;
+  border-radius: 12px;
+  background: #ccc;
+  transition: 0.3s;
+  position: relative;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  top: 3px;
+  left: 3px;
+  background: white;
+  transition: 0.3s;
+}
+
+input:checked + .slider {
+  background: #00D1B2;
+}
+
+input:checked + .slider::before {
+  transform: translateX(26px);
+}
+
+/* Form Styles */
+.password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.password-form input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+}
+
+.password-form input:focus {
+  border-color: #00D1B2;
+}
+
+/* Forms List */
+.forms-list {
+  list-style: none;
+  padding: 0;
+}
+
+.forms-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.forms-list li:last-child {
+  border-bottom: none;
+}
+
+/* Danger Zone */
+.danger-zone {
+  border: 1px solid #ffdddd;
+}
+
+.btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  text-align: center;
+}
+
+.btn-primary {
+  background: #00D1B2;
+  color: white;
+}
+
+.btn-secondary {
+  background: #4BCFFF;
+  color: white;
+}
+
+.btn-danger {
+  background: #ff3860;
+  color: white;
+}
+
+.message {
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.message.success {
+  color: #23d160;
+}
+
+.message.error {
+  color: #ff3860;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .profile-container {
+    padding: 10px;
+  }
+
+  .forms-list li {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
