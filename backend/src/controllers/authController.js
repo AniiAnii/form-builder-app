@@ -60,7 +60,7 @@ async function me(req, res) {
 }
 
 // CHANGE PASSWORD
-exports.changePassword = async (req, res) => {
+const changePassword = async (req, res) => {
   try {
     const { oldPassword, newPassword } = req.body;
     const user = await User.findByPk(req.user.id);
@@ -79,8 +79,7 @@ exports.changePassword = async (req, res) => {
   }
 };
 
-// DELETE ACCOUNT
-exports.deleteAccount = async (req, res) => {
+const deleteAccount = async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id);
     await user.destroy(); // CASCADE deletes forms, responses, etc.
@@ -91,10 +90,11 @@ exports.deleteAccount = async (req, res) => {
   }
 };
 
-module.exports = { 
-  register, 
-  login, 
-  me, 
-  changePassword, 
-  deleteAccount 
+// ✅ Now export all functions
+module.exports = {
+  register,
+  login,
+  me,
+  changePassword,
+  deleteAccount
 };
