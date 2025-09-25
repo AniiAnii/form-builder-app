@@ -1,4 +1,3 @@
-// frontend/src/pages/LandingPage.js
 import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -9,15 +8,15 @@ export default function LandingPage() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // Redirect if user is already logged in
   useEffect(() => {
     if (user) {
+      console.log("User detected, redirecting to /profile", user);
       navigate("/profile", { replace: true });
     }
   }, [user, navigate]);
 
-  // While checking auth or redirecting, show nothing
-  if (user) return null;
+  // Show nothing while redirecting
+  if (user) return <div style={{ color: 'white' }}>Redirecting...</div>;
 
   return (
     <div className="landing-page">
@@ -31,12 +30,8 @@ export default function LandingPage() {
         </p>
 
         <div className="cta-buttons">
-          <Link to="/register" className="btn btn-primary">
-            Get Started
-          </Link>
-          <Link to="/login" className="btn btn-secondary">
-            Sign In
-          </Link>
+          <Link to="/register" className="btn btn-primary">Get Started</Link>
+          <Link to="/login" className="btn btn-secondary">Sign In</Link>
         </div>
       </div>
 
