@@ -1,7 +1,8 @@
+// frontend/src/pages/LoginPage.js
 import React, { useState, useContext } from "react";
 import { login } from "../services/authService";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./AuthForm.css";
 
 export default function LoginPage() {
@@ -18,9 +19,12 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const data = await login({ email, password });
+      console.log("Login successful:", data);
       loginSuccess(data);
-      navigate("/profile"); 
+      console.log("Navigating to /profile...");
+      navigate("/profile"); // Now works!
     } catch (err) {
+      console.error("Login failed:", err);
       setError(err?.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
@@ -44,7 +48,7 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               required
-              autoFocus 
+              autoFocus
             />
           </div>
           <div className="form-group">
@@ -64,8 +68,7 @@ export default function LoginPage() {
 
         <div className="auth-footer">
           Don't have an account?{" "}
-          
-        <Link to="/register" className="link-accent">Register</Link>
+          <Link to="/register" className="link-accent">Register</Link>
         </div>
       </div>
     </div>
