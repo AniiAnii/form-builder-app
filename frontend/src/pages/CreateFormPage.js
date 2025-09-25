@@ -1,16 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api"; // Make sure you import the api service
 import "./CreateFormPage.css";
-import api from "./api"; 
-
-
-export const createForm = async (form) => { 
-
-  const res = await api.post("/forms", form); 
-
-  return res.data; 
-
-}; 
 
 export default function CreateFormPage() {
   const [title, setTitle] = useState("");
@@ -18,11 +9,23 @@ export default function CreateFormPage() {
   const [allowGuests, setAllowGuests] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // In real app: send to backend
-    alert(`Form "${title || 'Untitled'}" created!`);
-    navigate("/");
+    try {
+      // Call your API to create the form
+      const data = await api.post("/forms", {
+        title,
+        description,
+        allowGuests
+      });
+      
+      alert(`Form "${data.data.form.title}" created!`);
+      
+      // Navigate back to profile page (which should now show the new form)
+      navigate("/profile");
+    } catch (err) {
+      setError(err?.response?.data?.message || "Failed to create form");
+    }
   };
 
   return (
@@ -58,14 +61,14 @@ export default function CreateFormPage() {
               <input
                 type="checkbox"
                 checked={allowGuests}
-                onChange={(e) => setAllowGuests(e.target.checked)}
+                onChange={(e) => setAllowGuests(e.target.value)}
               />
               Allow unregistered users to respond
             </label>
           </div>
 
           <div className="form-actions">
-            <button type="button" onClick={() => navigate("/dashboard")} className="btn btn-secondary">
+            <button type="button" onClick={() => navigate("/profile")} className="btn btn-secondary">
               Cancel
             </button>
             <button type="submit" className="btn btn-primary">
