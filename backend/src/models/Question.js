@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
-//const Form = require("./Form");
+const Form = require("./Form");
 
 const Question = sequelize.define("Question", {
   id: {
@@ -27,13 +27,13 @@ const Question = sequelize.define("Question", {
   },
   type: {
     type: DataTypes.ENUM(
-      "shortText",
-      "longText",
-      "singleChoice",
-      "multipleChoice",
-      "numeric",
-      "date",
-      "time"
+      "shortText",      // Short text answer – up to 512 characters
+      "longText",       // Long text answer – up to 4096 characters
+      "singleChoice",   // Multiple choice, single answer
+      "multipleChoice", // Multiple choice, multiple answers
+      "numeric",        // Single numeric answer with scale
+      "date",           // Date
+      "time"            // Time
     ),
     allowNull: false,
   },
@@ -41,37 +41,32 @@ const Question = sequelize.define("Question", {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
-  options: {
-    type: DataTypes.JSON,
-    allowNull: true,
-  },
-  minChoices: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    validate: { min: 1 }
-  },
-  step: {
-    type: DataTypes.FLOAT,
-    allowNull: true,
-  },
-  rangeFrom: {
-    type: DataTypes.FLOAT,
-    allowNull: true,
-  },
-  rangeTo: {
-    type: DataTypes.FLOAT,
-    allowNull: true,
-  },
   order: {
     type: DataTypes.INTEGER,
+    allowNull: false,
     defaultValue: 0,
   },
+  options: {
+    type: DataTypes.JSON, // For choices in single/multiple choice questions
+    allowNull: true,
+  },
+  numericSettings: {
+    type: DataTypes.JSON, // For numeric scale: { min, max, step }
+    allowNull: true,
+  },
+  maxAnswers: { // For multiple choice - max number of answers allowed
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
+  answerLength: { // For text answers - max length
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  }
 }, {
   tableName: "questions",
   timestamps: true,
 });
 
-//Form.hasMany(Question, { foreignKey: "formId" }); prijavljuje gresku
-//Question.belongsTo(Form, { foreignKey: "formId" });
+Question.belongsTo(Form, { foreignKey: "formId" });
 
 module.exports = Question;

@@ -1,188 +1,183 @@
-const { Question, Form, Collaborator } = require("../models");
+const { Question, Form } = require("../models");
 
-// Pomoćna funkcija: proverava da li korisnik može uređivati formu
-const canEditForm = async (formId, userId) => {
-  const form = await Form.findByPk(formId);
-  if (!form) return { can: false, error: "Form not found" };
-
-  if (form.ownerId === userId) return { can: true };
-
-  const collaborator = await Collaborator.findOne({
-    where: { formId, userId, role: "editor" }
-  });
-
-  return collaborator ? { can: true } : { can: false, error: "No edit access" };
-};
-
-// --- CRUD OPERACIJE ---
-
-// POST /api/questions
+// Create a new question for a form
 exports.createQuestion = async (req, res) => {
   try {
-    const { formId, text, type, required, options, minChoices, step, rangeFrom, rangeTo, imageUrl } = req.body;
+    const { formId, text, type, required, order, options, numericSettings, maxAnswers, answerLength, imageUrl } = req.body;
 
-    const permission = await canEditForm(formId, req.user.id);
-    if (!permission.can) return res.status(403).json({ message: permission.error });
+    // Verify user owns the form
+    const form = await Form.findByPk(formId);
+    if (!form || form.ownerId !== req.user.id) {
+      return res.status(403).json({ message: "Access denied" });
+    }
 
-    const maxOrder = await Question.max("order", { where: { formId } });
-    const order = (maxOrder || 0) + 1;
+    // Validate required fields
+    if (!text || !type) {
+      return res.status(400).json({ message: "Text and type are required" });
+    }
 
     const question = await Question.create({
       formId,
       text,
       type,
       required: required || false,
-      options,
-      minChoices,
-      step,
-      rangeFrom,
-      rangeTo,
-      imageUrl,
-      order
+      order: order || 0,
+      options: options || null,
+      numericSettings: numericSettings || null,
+      maxAnswers: maxAnswers || null,
+      answerLength: answerLength || null,
+      imageUrl: imageUrl || null
     });
 
-    res.status(201).json({ question });
+    res.status(201).json({ message: "Question created successfully", question });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    console.error("Error creating question:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
   }
 };
 
-// PUT /api/questions/:id
-exports.updateQuestion = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { text, type, required, options, minChoices, step, rangeFrom, rangeTo, imageUrl } = req.body;
-
-    const question = await Question.findByPk(id);
-    if (!question) return res.status(404).json({ message: "Question not found" });
-
-    const permission = await canEditForm(question.formId, req.user.id);
-    if (!permission.can) return res.status(403).json({ message: permission.error });
-
-    await question.update({
-      text,
-      type,
-      required,
-      options,
-      minChoices,
-      step,
-      rangeFrom,
-      rangeTo,
-      imageUrl
-    });
-
-    res.json({ question });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-// DELETE /api/questions/:id
-exports.deleteQuestion = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const question = await Question.findByPk(id);
-    if (!question) return res.status(404).json({ message: "Question not found" });
-
-    const permission = await canEditForm(question.formId, req.user.id);
-    if (!permission.can) return res.status(403).json({ message: permission.error });
-
-    await question.destroy();
-    res.json({ message: "Question deleted" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-// GET /api/questions/form/:formId
+// Get all questions for a form
 exports.getQuestionsByForm = async (req, res) => {
   try {
     const { formId } = req.params;
+
+    // Verify user owns the form or is a collaborator
     const form = await Form.findByPk(formId);
-    if (!form) return res.status(404).json({ message: "Form not found" });
-
-    // Proveri pristup: vlasnik, editor, viewer
-    const isOwner = form.ownerId === req.user.id;
-    const isEditor = !!(await Collaborator.findOne({
-      where: { formId, userId: req.user.id, role: "editor" }
-    }));
-    const isViewer = !!(await Collaborator.findOne({
-      where: { formId, userId: req.user.id, role: "viewer" }
-    }));
-
-    if (!isOwner && !isEditor && !isViewer) {
+    if (!form || form.ownerId !== req.user.id) {
       return res.status(403).json({ message: "Access denied" });
     }
 
     const questions = await Question.findAll({
       where: { formId },
-      order: [["order", "ASC"]]
+      order: [['order', 'ASC']]
     });
 
     res.json({ questions });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    console.error("Error fetching questions:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
   }
 };
 
-// POST /api/questions/:id/clone
+// Update a question
+exports.updateQuestion = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { text, type, required, order, options, numericSettings, maxAnswers, answerLength, imageUrl } = req.body;
+
+    const question = await Question.findByPk(id);
+    if (!question) {
+      return res.status(404).json({ message: "Question not found" });
+    }
+
+    // Verify user owns the form
+    const form = await Form.findByPk(question.formId);
+    if (!form || form.ownerId !== req.user.id) {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    await question.update({
+      text,
+      type,
+      required,
+      order,
+      options,
+      numericSettings,
+      maxAnswers,
+      answerLength,
+      imageUrl
+    });
+
+    res.json({ message: "Question updated successfully", question });
+  } catch (err) {
+    console.error("Error updating question:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
+// Delete a question
+exports.deleteQuestion = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const question = await Question.findByPk(id);
+    if (!question) {
+      return res.status(404).json({ message: "Question not found" });
+    }
+
+    // Verify user owns the form
+    const form = await Form.findByPk(question.formId);
+    if (!form || form.ownerId !== req.user.id) {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    await question.destroy();
+    res.json({ message: "Question deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting question:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
+// Reorder questions
+exports.reorderQuestions = async (req, res) => {
+  try {
+    const { formId, questions } = req.body; // questions: array of { id, order }
+
+    // Verify user owns the form
+    const form = await Form.findByPk(formId);
+    if (!form || form.ownerId !== req.user.id) {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    // Update each question's order
+    for (const q of questions) {
+      await Question.update({ order: q.order }, { where: { id: q.id, formId } });
+    }
+
+    res.json({ message: "Questions reordered successfully" });
+  } catch (err) {
+    console.error("Error reordering questions:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
+// Clone a question
 exports.cloneQuestion = async (req, res) => {
   try {
     const { id } = req.params;
-    const original = await Question.findByPk(id);
-    if (!original) return res.status(404).json({ message: "Question not found" });
 
-    const permission = await canEditForm(original.formId, req.user.id);
-    if (!permission.can) return res.status(403).json({ message: permission.error });
-
-    const maxOrder = await Question.max("order", { where: { formId: original.formId } });
-    const order = (maxOrder || 0) + 1;
-
-    const cloned = await Question.create({
-      ...original.toJSON(),
-      id: undefined,
-      order,
-      createdAt: undefined,
-      updatedAt: undefined
-    });
-
-    res.status(201).json({ question: cloned });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-// PUT /api/questions/reorder
-exports.reorderQuestions = async (req, res) => {
-  try {
-    const { items } = req.body; // [{ id, order }, ...]
-    if (!Array.isArray(items)) {
-      return res.status(400).json({ message: "Invalid data format" });
+    const originalQuestion = await Question.findByPk(id);
+    if (!originalQuestion) {
+      return res.status(404).json({ message: "Question not found" });
     }
 
-    const questionIds = items.map(i => i.id);
-    const questions = await Question.findAll({ where: { id: questionIds } });
+    // Verify user owns the form
+    const form = await Form.findByPk(originalQuestion.formId);
+    if (!form || form.ownerId !== req.user.id) {
+      return res.status(403).json({ message: "Access denied" });
+    }
 
-    if (questions.length === 0) return res.status(400).json({ message: "No questions found" });
+    // Find the highest order number in this form
+    const maxOrder = await Question.max('order', { where: { formId: originalQuestion.formId } });
+    const newOrder = maxOrder ? maxOrder + 1 : 0;
 
-    const formId = questions[0].formId;
-    const permission = await canEditForm(formId, req.user.id);
-    if (!permission.can) return res.status(403).json({ message: permission.error });
-
-    const updates = questions.map(q => {
-      const newOrder = items.find(i => i.id === q.id)?.order;
-      return q.update({ order: newOrder });
+    const clonedQuestion = await Question.create({
+      formId: originalQuestion.formId,
+      text: `${originalQuestion.text} (Copy)`,
+      type: originalQuestion.type,
+      required: originalQuestion.required,
+      order: newOrder,
+      options: originalQuestion.options,
+      numericSettings: originalQuestion.numericSettings,
+      maxAnswers: originalQuestion.maxAnswers,
+      answerLength: originalQuestion.answerLength,
+      imageUrl: originalQuestion.imageUrl
     });
 
-    await Promise.all(updates);
-    res.json({ message: "Order updated successfully" });
+    res.status(201).json({ message: "Question cloned successfully", question: clonedQuestion });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    console.error("Error cloning question:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
   }
 };
