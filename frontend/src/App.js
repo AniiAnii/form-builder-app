@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import CreateFormPage from "./pages/CreateFormPage";
 import ProfilePage from "./pages/ProfilePage";
 import FormBuilderPage from "./pages/FormBuilderPage"; // ✅ Add this import
+import FormFillPage from "./pages/FormFillPage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/forms/create" element={<CreateFormPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/forms/:formId/fill" element={<FormFillPage />} />
         <Route path="/forms/:formId/edit" element={<FormBuilderPage />} /> {/* ✅ Add this route */}
       </Routes>
     </Router>

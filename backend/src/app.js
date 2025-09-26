@@ -14,6 +14,8 @@ const Collaborator = require("./models/Collaborator");
 // Import routes
 const authRoutes = require("./routes/authRoutes");
 const formRoutes = require("./routes/formRoutes");
+const questionRoutes = require("./routes/questionRoutes");
+const responseRoutes = require("./routes/responseRoutes");
 
 dotenv.config();
 
@@ -24,6 +26,8 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/forms", formRoutes);
+app.use("/api/questions", questionRoutes);
+app.use("/api/responses", responseRoutes);
 
 // Test route
 app.get("/", (req, res) => res.send("Backend radi!"));
@@ -37,8 +41,8 @@ async function startServer() {
     await db.authenticate();
     console.log("MySQL konekcija uspostavljena.");
 
-    // Sync all models
-    await db.sync({ alter: true }); // Use alter: true to update existing tables
+    // Sync all models - use force: true to reset tables (only for development!)
+    await db.sync({ force: true }); // ✅ This will recreate all tables
     console.log("Sve tabele sinhronizovane.");
 
     app.listen(PORT, () => {

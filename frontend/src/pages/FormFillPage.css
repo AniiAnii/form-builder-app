@@ -1,0 +1,102 @@
+.form-fill-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background: #0F1A3D;
+  padding: 40px 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+}
+
+.form-fill-card {
+  background: white;
+  color: #1a1a1a;
+  padding: 40px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.form-fill-card h1 {
+  color: #0F1A3D;
+  margin-top: 0;
+}
+
+.form-description {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.form-fill-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #00D1B2;
+  outline: none;
+}
+
+.question-container {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #00D1B2;
+}
+
+.question-header {
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.option-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.success-message {
+  text-align: center;
+  padding: 40px;
+}
+
+.success-message h2 {
+  color: #23d160;
+  margin-bottom: 15px;
+}
+
+@media (max-width: 600px) {
+  .form-fill-card {
+    padding: 20px;
+  }
+}

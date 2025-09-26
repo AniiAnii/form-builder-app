@@ -208,7 +208,12 @@ export default function ProfilePage() {
                       >
                         Edit
                       </button>
-                      <button className="btn btn-sm btn-outline">Responses</button>
+                      <button 
+    onClick={() => navigate(`/forms/${form.id}/fill`)} 
+    className="btn btn-sm btn-outline"
+  >
+    Fill Form
+  </button>
                     </div>
                   </div>
                 ))}

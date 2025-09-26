@@ -104,6 +104,12 @@ export default function FormBuilderPage() {
     }
   };
 
+  const handleSaveForm = () => {
+    // Save is implicit since each question is saved immediately
+    // But you can add a confirmation or additional save logic here
+    alert("Form saved successfully!");
+  };
+
   if (loading) {
     return <div className="form-builder-container">Loading...</div>;
   }
@@ -112,9 +118,14 @@ export default function FormBuilderPage() {
     <div className="form-builder-container">
       <div className="form-header">
         <h1>Editing: {form?.title}</h1>
-        <button onClick={() => navigate(`/profile`)} className="btn btn-secondary">
-          Back to Profile
-        </button>
+        <div className="form-actions">
+          <button onClick={() => navigate(`/profile`)} className="btn btn-secondary">
+            Back to Profile
+          </button>
+          <button onClick={handleSaveForm} className="btn btn-primary">
+            Save Form
+          </button>
+        </div>
       </div>
 
       {/* Add New Question Form */}
@@ -246,6 +257,13 @@ export default function FormBuilderPage() {
             ))}
           </div>
         )}
+      </div>
+
+      {/* Save Button at the bottom */}
+      <div className="form-actions-bottom">
+        <button onClick={handleSaveForm} className="btn btn-primary">
+          Save Form
+        </button>
       </div>
     </div>
   );

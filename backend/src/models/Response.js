@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
-const User = require("./User");
 const Form = require("./Form");
 
 const Response = sequelize.define("Response", {
@@ -19,24 +18,27 @@ const Response = sequelize.define("Response", {
     onDelete: "CASCADE",
   },
   submittedBy: {
-    type: DataTypes.INTEGER.UNSIGNED,
-    allowNull: true,
-    references: {
-      model: 'users',
-      key: "id",
-    },
-    onDelete: "SET NULL",
+    type: DataTypes.STRING(255),
+    allowNull: true, // Allow null for guest responses
+  },
+  email: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+    validate: {
+      isEmail: true
+    }
   },
   answers: {
     type: DataTypes.JSON,
     allowNull: false,
-  },
+  }
 }, {
   tableName: "responses",
   timestamps: true,
 });
 
 Response.belongsTo(Form, { foreignKey: "formId" });
-Response.belongsTo(User, { foreignKey: "submittedBy" });
+// Make sure there's NO relationship to User for submittedBy
+// Response.belongsTo(User, { foreignKey: "submittedBy" }); // ❌ Remove this if it exists
 
 module.exports = Response;
