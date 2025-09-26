@@ -21,8 +21,8 @@ export default function CreateFormPage() {
       
       alert(`Form "${response.data.form.title}" created!`);
       
-      // Navigate back to profile page (which should now show the new form)
-      navigate("/profile");
+      // Change the navigation after form creation:
+      navigate(`/forms/${response.data.form.id}/edit`);
     } catch (err) {
       setError(err?.response?.data?.message || "Failed to create form");
     }
