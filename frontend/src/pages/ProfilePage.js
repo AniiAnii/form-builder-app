@@ -21,30 +21,6 @@ export default function ProfilePage() {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  // In the theme toggle
-<label className="theme-toggle">
-  <span>{theme === "dark" ? "Dark Mode" : "Light Mode"}</span>
-  <input
-    type="checkbox"
-    checked={theme === "light"}
-    onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
-    className="toggle-input"
-  />
-  <div className="slider"></div>
-</label>
-
-
-// In ProfilePage.js, add a refresh function
-const refreshForms = async () => {
-  if (!user) return;
-  try {
-    const res = await api.get("/forms/user");
-    setForms(res.data.forms);
-  } catch (err) {
-    console.error("Failed to reload forms:", err);
-  }
-};
-
   // Fetch user's forms
   useEffect(() => {
     const loadForms = async () => {
@@ -139,7 +115,7 @@ const refreshForms = async () => {
           <div className="section">
             <h3>Appearance</h3>
             <label className="theme-toggle">
-              <span>Dark Mode</span>
+              <span>{theme === "dark" ? "Dark Mode" : "Light Mode"}</span>
               <input
                 type="checkbox"
                 checked={theme === "light"}
@@ -203,14 +179,13 @@ const refreshForms = async () => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
               <h3>My Forms</h3>
               <button 
-               onClick={() => {
-                 navigate('/forms/create');
-                     // Optionally, you could call refreshForms after a delay if needed
-              }} 
-              className="btn btn-primary"
-            >
-              ➕ New Form
-           </button>
+                onClick={() => {
+                  navigate('/forms/create');
+                }} 
+                className="btn btn-primary"
+              >
+                ➕ New Form
+              </button>
             </div>
 
             {forms.length === 0 ? (
@@ -225,8 +200,14 @@ const refreshForms = async () => {
                       <span>{form.responsesCount || 0} responses</span>
                       <span>Created {new Date(form.createdAt).toLocaleDateString()}</span>
                     </div>
+                    
                     <div className="form-actions">
-                      <button className="btn btn-sm btn-outline">Edit</button>
+                      <button 
+                        onClick={() => navigate(`/forms/${form.id}/edit`)} 
+                        className="btn btn-sm btn-outline"
+                      >
+                        Edit
+                      </button>
                       <button className="btn btn-sm btn-outline">Responses</button>
                     </div>
                   </div>
