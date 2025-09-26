@@ -7,19 +7,19 @@ export default function CreateFormPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [allowGuests, setAllowGuests] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Call your API to create the form
-      const data = await api.post("/forms", {
+      const response = await api.post("/forms", {
         title,
         description,
         allowGuests
       });
       
-      alert(`Form "${data.data.form.title}" created!`);
+      alert(`Form "${response.data.form.title}" created!`);
       
       // Navigate back to profile page (which should now show the new form)
       navigate("/profile");
@@ -33,6 +33,9 @@ export default function CreateFormPage() {
       <div className="create-form-card">
         <h2 className="create-form-title">Create New Form</h2>
         <p className="create-form-subtitle">Start collecting responses in seconds.</p>
+
+        {/* Show error if there is one */}
+        {error && <div className="error-message" style={{ color: 'red', marginBottom: '15px' }}>{error}</div>}
 
         <form onSubmit={handleSubmit} className="create-form">
           <div className="form-group">
@@ -61,7 +64,7 @@ export default function CreateFormPage() {
               <input
                 type="checkbox"
                 checked={allowGuests}
-                onChange={(e) => setAllowGuests(e.target.value)}
+                onChange={(e) => setAllowGuests(e.target.checked)}
               />
               Allow unregistered users to respond
             </label>
