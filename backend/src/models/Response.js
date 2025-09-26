@@ -38,7 +38,7 @@ const Response = sequelize.define("Response", {
 });
 
 Response.belongsTo(Form, { foreignKey: "formId" });
-// Make sure there's NO relationship to User for submittedBy
-// Response.belongsTo(User, { foreignKey: "submittedBy" }); // ❌ Remove this if it exists
+
+
 
 module.exports = Response;

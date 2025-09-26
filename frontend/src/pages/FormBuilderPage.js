@@ -105,8 +105,8 @@ export default function FormBuilderPage() {
   };
 
   const handleSaveForm = () => {
-    // Save is implicit since each question is saved immediately
-    // But you can add a confirmation or additional save logic here
+    
+    
     alert("Form saved successfully!");
   };
 

@@ -90,7 +90,7 @@ const deleteAccount = async (req, res) => {
   }
 };
 
-// ✅ Now export all functions
+
 module.exports = {
   register,
   login,

@@ -26,7 +26,7 @@ export default function ProfilePage() {
     const loadForms = async () => {
       if (!user) return;
       try {
-        const res = await api.get("/forms/user"); // Your existing endpoint
+        const res = await api.get("/forms/user"); 
         setForms(res.data.forms);
       } catch (err) {
         console.error("Failed to load forms:", err);
