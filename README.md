@@ -101,6 +101,9 @@ Once the containers are running and the logs indicate the servers are started:
 *   **Response Collection:** Allow users (registered or anonymous, based on form settings) to submit responses to forms.
 *   **Response Viewing:** (Planned/Implemented) View individual responses and aggregated data for forms created by the user.
 
+## Project Structure
+<img width="470" height="227" alt="pisibp" src="https://github.com/user-attachments/assets/ca076365-1dd2-4ada-a63a-305bc6a88868" />
 
 ---
+
 Feel free to adjust the technology list (like CSS Modules), project structure comments, or feature list based on the exact specifics of your implementation.
